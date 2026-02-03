@@ -1,0 +1,31 @@
+import numpy as np
+
+# Calculate Jacobian
+def Jac(theta1, theta2, theta3, l1, l2, l3):
+
+    theta12 = theta1 + theta2
+    theta123 = theta12 + theta3
+
+    J = np.array([
+        [
+            -l1*np.sin(theta1) - l2*np.sin(theta12) - l3*np.sin(theta123),
+            -l2*np.sin(theta12) - l3*np.sin(theta123),
+            -l3*np.sin(theta123)
+        ],
+        [
+            l1*np.cos(theta1) + l2*np.cos(theta12) + l3*np.cos(theta123),
+            l2*np.cos(theta12) + l3*np.cos(theta123),
+            l3*np.cos(theta123)
+        ]
+    ])
+
+    return J
+
+# Pseudoinverse Jacobian with damping (to reduce oscillations near singularities)
+def PseudoIJ_damped(J, damping=0.01):
+    JJ_T = J @ J.T
+    JJ_T_damped_inv = np.linalg.inv(JJ_T + damping**2 * np.eye(2))
+
+    J_pseudo = J.T @ JJ_T_damped_inv
+    return J_pseudo
+
