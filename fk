@@ -1,0 +1,33 @@
+import numpy as np
+
+# Angles into radians for calculations
+theta1 = np.deg2rad()
+theta2 = np.deg2rad()
+theta3 = np.deg2rad()
+
+# Link lengths
+l1 = 
+l2 = 
+l3 = 
+
+def fk(theta1, theta2, theta3, l1, l2, l3):
+
+  # Cumulative joint angles
+  theta12 = theta1 + theta2
+  theta123 = theta12 + theta3
+
+  # X position
+  x = (l1 * np.cos(theta1) +
+       l2 * np.cos(theta12) +
+       l3 * np.cos(theta123))
+
+  # Y position
+  y = (l1 * np.sin(theta1) +
+       l2 * np.sin(theta12) +
+       l3 * np.sin(theta123))
+
+    return (x, y)
+    
+
+
+
