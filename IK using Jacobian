@@ -1,0 +1,21 @@
+# Inverse Kinematics using Jacobian
+# Change max interations (max_iters) as relelvant
+# Change tollerence (tol) as relevent. Remember this is in radians
+
+def IK(target, initial_thetas, l1, l2, l3, damping=0.01, max_iters=1000, tol=0.01):
+    thetas = np.array(initial_thetas, dtype=float)
+    
+    for i in range(max_iters):
+        current_pos = FK(*thetas, l1, l2, l3)
+        error = target - current_pos
+        if np.linalg.norm(error) < tol:
+            print("Converged in {i} iterations")
+            return thetas
+        
+        J = Jac(*thetas, l1, l2, l3)
+        J_pseudo = PseudoIJ_damped(J, damping)
+        delta_theta = J_pseudo @ error
+        thetas += delta_theta
+        
+    print("Did not converge within max iterations")
+    return thetas
